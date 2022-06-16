@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Lx Console</title>
+    <script src="http://wechatfe.github.io/vconsole/lib/vconsole.min.js?v=3.2.0"></script>
+    <script>
+        // init vConsole
+        var vConsole = new VConsole();
+        console.log('Hello world');
+    </script>
+    <!-- <script src="https://openapi.lanxin.cn/app-jssdk.umd.min.js"></script> -->
+    <script src="./css/app-jssdkv3.umd.min.js"></script>
+    <!-- <script src="./js/lxx.js"></script> -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/semantic.css">
+    <style type="text/css">
+        body>.ui.container {
+            margin-top: 3em;
+        }
+
+        iframe {
+            border: none;
+            width: calc(100% + 2em);
+            margin: 0em -1em;
+            height: 300px;
+        }
+
+        iframe html {
+            overflow: hidden;
+        }
+
+        iframe body {
+            padding: 0em;
+        }
+
+        .ui.container>h1 {
+            font-size: 3em;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .ui.container>h2.dividing.header {
+            font-size: 2em;
+            font-weight: normal;
+            margin: 4em 0em 3em;
+        }
+
+
+        .ui.table {
+            table-layout: fixed;
+        }
+
+        .uiInfo{
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+        }
+        .uiGetImageInfo{
+            width: 150px;
+            background-color: #fff;
+            position: absolute;
+            left: 50%;
+            transform: translate(-45%,-45%);
+            text-align: center;
+        }
+        .chooseImageId{
+            margin-bottom: 10px;
+            width: 110px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            color: lavenderblush;
+            font-weight: bold;
+        }
+        .getLocalId{
+            width: 110px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            color: lavenderblush;
+            font-weight: bold;
+        }
+        .uichooseFile{
+            width: 150px;
+            background-color: #fff;
+            position: absolute;
+            left: 50%;
+            transform: translate(-45%,-45%);
+            text-align: center;
+        }
+        .chooseFileId{
+            margin-bottom: 10px;
+            width: 110px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            color: lavenderblush;
+            font-weight: bold;
+        }
+        .input-list {
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .input-list .input-one {
+            display: flex;
+            margin-bottom: 10px;
+            line-height: 25px;
+        }
+        .input-list .input-one label {
+            display: inline-block;
+            width: 200px;
+        }
+        .input-list .input-one input {
+            width: 350px;
+            border-radius: 4px;
+            border-color: #cdcdcd;
+        }
+
+        .Scene-start{
+            margin-bottom: 10px;
+            width: 110px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            color: lavenderblush;
+            font-weight: bold;
+        }
+        .Scene-stop{
+
+            margin-bottom: 10px;
+            margin-left: 50px;
+            width: 110px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            color: lavenderblush;
+            font-weight: bold;
+        }
+        .Scene-status{
+            margin-bottom: 10px;
+            margin-left: 50px;
+            width: 110px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            color: lavenderblush;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ui container">
+        <h1>Lx Console 调试工作台 V0.11</h1>
+        <img src="" alt="未展示" id="showbase64"/>
+        <a
+            href="es360messenger://v1/app?id=524288&oid=8651264&entry_id=faccd9f3-23e0-478f-8502-208e611a9027&url=https%3A%2F%2Flt.lx.bjzx.gov.cn%2Fbpweb%2FAccount%2FExternalLogin%3FreturnUrl%3D%252Fbpweb%252Fapi%252Fnewlanxin%252FgoApp%253FappId%253Dfaccd9f3-23e0-478f-8502-208e611a9027&data=%7B%22appId%22%3A%22faccd9f3-23e0-478f-8502-208e611a9027%22%2C%22bpServerAddress%22%3A%22lt.lx.bjzx.gov.cn%22%2C%22bpServerPort%22%3A62722%2C%22bpWebUrl%22%3A%22https%3A%2F%2Flt.lx.bjzx.gov.cn%2Fbpweb%22%2C%22serverId%22%3A%22%22%2C%22version%22%3A98%7D&open_type=blueprint">测试睡觉就睡觉睡觉</a>
+        <br>
+        <a href="alert.html">alert debug</a>
+            <div class="ui error message">请在Lanxin 内置浏览器环境下使用！！</div>
+        <br>
+        <div class="uiInfo">
+            <div class="uichooseFile" style="font-weight: bold;">地图POI测试工具🔧</div>
+        </div>
+        <br>
+        
+        <div class="input-list">
+            <div class="input-one">
+                <label>坐标系类型：</label>
+                <input type="text" id="coordinateType" placeholder="请输入坐标系类型：wgs84(地球坐标)/gcj02(火星坐标)...">
+            </div>
+            <div class="input-one">
+                <label>兴趣点搜索关键词：</label>
+                <input type="text" id="poiKeyWords" placeholder="请输入关键词，以 ， 分隔...">
+            </div>
+            <div>
+                <button class="Scene-start" style="background-color: darksalmon;" onclick="chooseLocation()">开始定位</button>
+            </div>
+            <div class="ui one column grid">
+                <div class="column">
+                    <textarea id="xianshiFile" placeholder="文件信息展示..." style="height: 150px;width:100%;"></textarea>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="uiInfo">
+            <div class="uichooseFile" style="font-weight: bold;">持续定位测试工具🔧</div>
+        </div>
+        <br>
+
+        <div class="input-list">
+            <div class="input-one">
+                <label>坐标系类型：</label>
+                <input type="text" id="coordinateType" placeholder="请输入坐标系类型：wgs84(地球坐标)/gcj02(火星坐标)...">
+            </div>
+            <div class="input-one">
+                <label>期望精确度：</label>
+                <input type="text" id="targetAccurary" placeholder="请输入数字(单位：米)...">
+            </div>
+            <div class="input-one">
+                <label>变更感知精度(ios)</label>
+                <input type="text" id="iOSDistanceFilter" placeholder="请输入数字(单位：米)...">    
+            </div>
+            <div class="input-one">
+                <label>是否使用缓存：</label>
+                <input type="text" id="useCache" placeholder="请输入true/false...">
+            </div>
+            <div class="input-one">
+                <label>是否返回逆地理信息：</label>
+                <input type="text" id="withReGeocode" placeholder="请输入true/false...">
+            </div>
+            <div class="input-one">
+                <label>回传时间间隔(单位：ms)</label>
+                <input type="text" id="callBackInterval" placeholder="请输入回传时间间隔...">
+            </div>
+            <div class="input-one">
+                <label>场景ID：</label>
+                <input type="text" id="sceneId" placeholder="请输入场景ID...">
+            </div>
+            <div class="input-one">
+                <label>组合场景ID：</label>
+                <input type="text" id="sceneAllId" placeholder="请输入场景ID查看状态，以，分割...">
+            </div>
+            <div>
+                <button class="Scene-start" style="background-color: darksalmon;" onclick="geoLocaltionStart()">开始定位</button>
+                <button class="Scene-stop" style="background-color:lightskyblue;" onclick="geoLocaltionStop()">关闭定位</button>
+                <button class="Scene-status" style="background-color: orchid;" onclick="geoLocaltionStatus()">获取场景状态</button>
+                <br>
+                <div class="ui one column grid">
+                    <div class="column">
+                        <textarea id="xianshiFile" placeholder="文件信息展示..." style="height: 150px;width:100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="uiInfo">
+            <div class="uichooseFile" style="font-weight: bold;">文件选择测试工具🔧</div>
+        </div>
+        <br>
+
+        <div class="input-list">
+            <div class="input-one">
+                <label>【1】是否允许多选文件：</label>
+                <input type="text" id="multiple" placeholder="请输入true or false...">
+            </div>
+            <div class="input-one">
+                <label>可选文件最大数量：</label>
+                <input type="text" id="maxFile" placeholder="请输入数字...">
+            </div>
+            <div class="input-one">
+                <label>超出最大数量限制提示：</label>
+                <input type="text" id="maxTip" placeholder="请输入提示文本...">
+            </div>
+            <div class="input-one">
+                <label>最大文件大小：</label>
+                <input type="text" id="maxSize" placeholder="请输入最大文件，单位Bytes...">
+            </div>
+            <div class="input-one">
+                <label>文件类型（pdf/jpg/doc）：</label>
+                <input type="text" id="fileType" placeholder="请输入文件类型，以,分割...">
+            </div>
+            <div>
+                <button class="chooseFileId" style="background-color:salmon;" onclick="chooseFile()">选择文件</button>
+                <div class="ui one column grid">
+                    <div class="column">
+                        <textarea id="xianshiFile" placeholder="文件信息展示..." style="height: 150px;width:100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="uiInfo">
+            <div class="uiGetImageInfo" style="font-weight: bold;">图片信息测试工具🔧</div>
+        </div>
+        
+        <br>
+        <button class="chooseImageId" style="background-color:darkorange;" onclick="chooseImage()">选择图片</button>
+        <button class="getLocalId" style="background-color: hotpink;" onclick="getImageInfo()">获取图片信息</button>
+        <br>
+        <h3 class="ui center aligned header">图片选择结果<a href="javascript:void(0);" onclick="js_method()">复制</a></h3>
+
+        <div class="ui one column grid">
+            <div class="column">
+                <textarea id = "xianshi1" placeholder="图片的localId..." style="height: 150px;width:100%;"></textarea>
+            </div>
+        </div>
+        
+
+
+        <div class="ui horizontal section divider">图片质量测试工具🔧</div>
+        <button class="yellow ui small button" onclick="chooseImageWithArg('low')">低质量</button>
+        <button class="yellow ui small button" onclick="chooseImageWithArg('medium')">中质量</button>
+        <button class="green ui small button" onclick="chooseImageWithArg('high')">高质量</button>
+        <button class="green ui small button" onclick="getInfo()">获取信息</button>
+        <h3 class="ui center aligned header">图片选择结果<a href="javascript:void(0);" onclick="js_method()">复制</a></h3>
+
+        <div class="ui one column grid">
+            <div class="column">
+                <textarea placeholder="图片的localId..." style="height: 150px;width:100%;" id="xianshi"></textarea>
+            </div>
+        </div>
+        
+        <div class="ui horizontal section divider">压缩图片，先在上面选择图片</div>
+        <a>选择图片手动记住原图大小->复制原图localID->粘贴原图localID->输入压缩比例->点击压缩->复制压缩后localID->粘贴压缩后localID->点击预览->长按保存->选择图片->查看压缩后的图片大小->比对</a>
+        <button class="red ui small button" onclick="compressImage()">压缩已选择的图片</button>
+        <button class="blue ui small button" onclick="previewImage()">预览压缩后的图片</button>
+        <br><br/>
+        <div class="localId_indet">
+            <input id="localIds" placeholder="请输入图片的localId,用逗号分隔..." type="text" size="100">
+        </div><br>
+        <div class="localId_roation">
+            <input id="roation" placeholder="请输入压缩比例0～100..." type="text" size="100">
+        </div><br>
+        <div class="compress text view">
+            <div class="column">
+                <textarea placeholder="图片的localId..." style="height: 60px;width:100%;" id="compressTextView"></textarea>
+            </div>
+        </div>
+        
+        <div class="ui horizontal section divider">URL Schemel🚽</div>
+        <a class="yellow ui small button" href="es360messenger://v1/meeting?oid=8618240">视频会议（新蓝信环境）</a>
+        <a class="orange ui small button" href="es360messenger://v1/live?oid=8618240">直播（新蓝信环境）</a>
+        <a class="green ui small button" href="dcep://unionwallet">IOS 打开dcep</a>
+        <a class="teal ui small button" href="dcep://subwallet">Android(sbwallet)</a>
+        <a class="teal ui small button" href="dcep://uniwallet?sourceApplication=test"">Android(确认 uniwallet)</a>
+        <div class=" ui horizontal section divider">测试应用打开
+    </div>
+
+    <div class="ui attached icon info message">
+        <i class="help circle icon"></i>
+        <div class="content">
+            在Android客户端测试只输入Android相关的包就可以，同理
+        </div>
+    </div>
+
+    <div class="ui input">
+        <input placeholder="Android  Package..." type="text">
+    </div>
+    <div class="ui input">
+        <input placeholder="Android Download Url..." type="text">
+    </div>
+    <div class="ui input">
+        <input placeholder="IOS Scheme..." type="text">
+    </div>
+    <div class="ui input">
+        <input placeholder="IOS download..." type="text">
+    </div>
+    <button class="teal ui small button" onclick="">打开应用</button>
+
+    <button class="teal ui small button" onclick="click1()">getElectronicSignature</button>
+    <button class="teal ui small button" onclick="click2()">getClientCert</button>
+
+    <div class=" three wide column">
+        <div class="ui divider"></div>
+        <div class="ui inverted vertical footer segment">
+            <div class="ui inverted section divider"></div>
+            <h5 class="ui inverted header centered">@有问题请蓝信联系 徐诺斯</h5>
+            <img src="./image/icon.jpg" class="ui centered mini image">
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        function getInfo() {
+            alert("hello world");
+            lx.device.getSystemInfo({
+                success: function (res) {
+                    $("#xianshi").append(JSON.stringify(res));  
+                },
+                fail: function (err) {}
+            })
+        }
+
+        function js_method() {
+            var copytest = $("#xianshi");
+            copytest.select();
+            document.execCommand("copy");
+        }
+
+        function click() {
+            alert("Error!!");
+        }
+
+        function chooseImageWithArg(res) {
+            lx.media.chooseImage({
+                count: 9,
+                quality: res,
+                sourceType: [
+                    "album",
+                    "camera"
+                ],
+                success: function (res) {
+                    var myArray = res.tempFiles
+                    var localIds = ""
+                    for (var value of myArray) {
+                         localIds = localIds + value.localId + ","
+                    }
+                    $("#xianshi").append(localIds);
+                },
+                fail: function (err) {
+                    $("#xianshi").append("api粗错了orz");
+                }
+            })
+        }
+
+
+        function click1() {
+            lx.internal.jtb.utils.getElectronicSignature({
+                content: "hello world",
+                success: function (res) {
+                    console.log(res);
+                    $("#xianshi").append(JSON.stringify(res));
+                },
+                fail: function (err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function click2() {
+            lx.internal.jtb.utils.getClientCert({
+                type: "jtb",
+                success: function (res) {
+                    console.log(res);
+                    $("#xianshi").append(JSON.stringify(res));
+                },
+                fail: function (err) {
+                    console.log(err);
+                }
+            })
+        }
+        
+        function compressImage(){
+            var localIds = $("#localIds").val();
+            var ration = $("#roation").val();
+            var x = parseInt(ration, 10);
+            var filePaths = localIds.split(",");
+            lx.media.compressImage({
+                ratio: x,
+                filePaths: filePaths,
+                success: function (res) {
+                    var myArray = res.tempFilePaths
+                    var comIds = ""
+                    for (var value of myArray) {
+                         comIds = comIds + value + ","
+                    }
+                    $("#compressTextView").append(comIds);
+                },
+                fail: function (err) {
+                    $("#compressTextView").append("出错了");
+                }
+            })
+        }
+        function previewImage(){
+            var localIds = $("#localIds").val()
+            var filePaths = localIds.split(",");
+            lx.media.previewImage({
+                current: filePaths[0],
+                urls: filePaths,
+                actions: ["save","share"],
+                success: function (res) {
+                    $("#compressTextView").append("成功了");
+                },
+                fail: function (err) {
+                    $("#compressTextView").append("出错了");
+                }
+            })
+        }
+        
+        var getLocalIds = ""
+        function chooseImage() {
+            lx.media.chooseImage({
+                count: 9,
+                sourceType: [
+                    "album",
+                    "camera"
+                ],
+                success: function (res) {
+                    var myArray = res.tempFiles
+                    var value = myArray[0];
+                    // for (var value of myArray) {
+                    //     getLocalIds = getLocalIds + value.localId + ""
+                    // }
+                    getLocalIds = value.localId;
+                    $("#xianshi1").append(getLocalIds);
+                },
+                fail: function (err) {
+                    $("#xianshi1").append("api粗错了orz");
+                }
+            })
+        }
+        function getImageInfo(){
+            var localIdInput = getLocalIds
+            lx.media.getImageInfo({
+                src: localIdInput ,
+                success: function (res) {
+                    console.log("call");
+                    $("#xianshi1").append(JSON.stringify(res));
+                    console.log("show base64");
+                    $("showbase64").src = res.base64;
+                },
+                fail: function (err) {
+                    $("#xianshi1").append("api粗错了orz");
+                }
+            })
+        }
+
+        function chooseFile(){
+
+            var multipleInput = document.getElementById("multiple").value;
+            if (multipleInput = null){
+                multipleInput = "true";
+            }
+            multipleInput = eval(multipleInput);
+            console.log(multipleInput);
+            
+            var maxInput = parseInt(document.getElementById("maxFile").value);
+            if (maxInput = null){
+                maxInput = 1;
+            }
+            // else{
+            //     maxInput = parseInt(document.getElementById("maxFile"));
+            // }
+            console.log(maxInput);
+
+            var maxTipInput = document.getElementById("maxTip").value;
+            if(maxTipInput = null){
+                maxTipInput = ""
+            }
+            console.log(maxInput);
+
+            var maxSizeInput = parseInt(document.getElementById("maxSize").value);
+            if (maxSizeInput = null){
+                maxSizeInput = 1024;
+            }
+            // else{
+            //     maxSizeInput = parseInt(document.getElementById("maxSize"));
+            // }
+            console.log(maxSizeInput);
+
+            var fileTypeInput = document.getElementById("fileType").value;
+            if(fileTypeInput = null){
+                fileType = "doc,png,pdf";
+            }
+            fileType = fileTypeInput.split(",");
+            console.log(fileType);
+
+            lx.biz.chooseLocalFile({
+                multiple: multipleInput, // 是否允许多选，默认为true
+                max: maxInput, // 可选最大数量，当允许多选时生效，最小为1
+                maxTip: maxTipInput,//选择数量超出最大限制提示
+                maxSize: maxSizeInput ,//最大文件大小，单位：Byte
+                types: fileType,
+                success: function (res) {
+                    console.log("call");
+                    $("#xianshiFile").append(JSON.stringify(res));
+                },
+                fail: function (err) {
+                    $("#xianshiFile").append("api粗错了orz");
+                }
+            })
+        }
+
+        function geoLocaltionStart(){
+            var coordinateTypeInput = $("#coordinateType").val();
+            var targetAccuracyInput = $("#targetAccuracy").val();
+
+            var iOSDistanceFilterInput = $("#iOSDistanceFilter").val();
+            var useCacheInput = $("#useCache").val();
+            var withReGeocodeInput = $("#withReGeocode").val();
+            var callBackIntervalInput = $("#callBackInterval").val();
+            var sceneIdInput = $("#sceneId").val();
+            lx.device.geoLocationStart({
+                coordinateType: coordinateTypeInput,
+                targetAccuracy: targetAccuracyInput.parseInt(),
+                iOSDistanceFilter: iOSDistanceFilterInput.parseInt(),
+                useCache: useCacheInput.eval(),
+                withReGeocode: withReGeocodeInput.eval(),
+                callBackInterval: callBackInterval.parseInt(),
+                sceneId: sceneIdInput,
+                success: function(res){
+                    $("#xianshiFile").append(JSON.stringify(res));
+                    $("#xianshiFile").append(" \n ");
+                },
+                fail: function(err){
+                    $("xianshiFile").append("api粗错了orz");
+                    $("#xianshiFile").append(" \n ");
+                }
+            })
+        }
+        function geoLocaltionStop(){
+            var sceneIdInput = $("#sceneId").val();
+            lx.device.geoLocationStart({
+                sceneId: sceneIdInput,
+                success: function(res){
+                    $("#xianshiFile").append(JSON.stringify(res));
+                    $("#xianshiFile").append(" \n ");
+                },
+                fail: function(err){
+                    $("xianshiFile").append("api粗错了orz");
+                    $("#xianshiFile").append(" \n ");
+                }
+            })
+        }
+        function geoLocaltionStatus(){
+            var sceneIdInput = $("#sceneAllId").val();
+            lx.device.geoLocationStart({
+                sceneId: sceneIdInput.split(","),
+                success: function(res){
+                    $("#xianshiFile").append(JSON.stringify(res));
+                    $("#xianshiFile").append(" \n ");
+                },
+                fail: function(err){
+                    $("xianshiFile").append("api粗错了orz");
+                    $("#xianshiFile").append(" \n ");
+                }
+            })
+        }
+
+        function chooseLocation(){
+            var coordinateTypeInput = $("#coordinateType").val();
+            var poiKeyWordsInput = $("#poiKeyWords").val();
+            lx.device.chooseLocation({
+                coordinateType: coordinateTypeInput,
+                poiKeyWords: poiKeyWordsInput.split(","),
+                success:function(res){
+                    $("#xianshiFile").append(JSON.stringify(res));
+                },
+                fail: function(err){
+                    $("xianshiFile").append("api粗错了orz");
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

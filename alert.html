@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .buttAl{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<script>
+    function buttonAlert(){
+        alert("支持alert弹窗啦");
+    }
+    function buttonConfirm(){
+        var myMessage = confirm("测试支持confirm弹窗嘛");
+        if(myMessage==true){
+            document.write("测试通过");
+        }else{
+            document.write("重新打开");
+        }
+    }
+</script>
+<body>
+    <div class="buttAl">
+        <input type="button" name="buttonAlert" onclick="buttonAlert()" value="这里是一个alert弹窗">
+    </div>
+    
+    <input type="button" name="buttonConfirm" onclick="buttonConfirm()" value="这里是一个confirm弹窗">
+</body>
+</html>
